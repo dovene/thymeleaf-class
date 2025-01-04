@@ -1,0 +1,88 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title>Liste des produits</title>
+    <style>
+        .red {
+            color: red;
+            font-weight: bold;
+        }
+        .green {
+            color: green;
+            font-weight: bold;
+        }
+        table, th, td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<h1>Liste des produits</h1>
+
+<!-- Lien pour ajouter un nouveau produit -->
+<a th:href="@{/products/add}">Ajouter</a>
+<br/><br/>
+
+<!-- 
+  Bloc qui s’affiche si la liste est vide 
+  (#lists.isEmpty(products) retourne true si la liste est vide)
+-->
+<div th:if="${products.isEmpty()}">
+    <p>Aucun produit enregistré.</p>
+</div>
+
+<!-- 
+  Bloc qui s’affiche si la liste N’EST PAS vide 
+  (th:unless = NOT de la condition ci-dessus)
+-->
+<table th:unless="${products.isEmpty()}">
+    <thead>
+        <tr>
+            <th>Référence</th>
+            <th>Désignation</th>
+            <th>Quantité en stock</th>
+            <th>Catégorie</th>
+            <th>Quantité d'alerte</th>
+            <th>Prix de vente</th>
+            <th>Date de création</th>
+            <th>Information</th>
+            <th>Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <!-- Boucle sur la liste des produits si elle n'est pas vide -->
+        <tr th:each="product : ${products}">
+            <td th:text="${product.reference}">REF</td>
+            <td th:text="${product.designation}">Désignation</td>
+            <td th:text="${product.quantityStock}">0</td>
+            <td th:text="${product.category}">catégorie</td>
+            <td th:text="${product.alertQuantity}">0</td>
+            <td th:text="${product.salePrice}">0.0</td>
+            <!-- Formatage de date si besoin :
+                 th:text="${#temporals.format(product.creationDate, 'dd/MM/yyyy')}" -->
+            <td th:text="${#temporals.format(product.creationDate, 'dd/MM/yyyy')}">date</td>
+
+            <!-- Colonne "Information" : rouge si stock < alerte, vert sinon -->
+            <td>
+                <span th:if="${product.quantityStock} < ${product.alertQuantity}" class="red">alerte stock</span>
+                <span th:if="${product.quantityStock} >= ${product.alertQuantity}" class="green">Ok</span>
+            </td>
+
+            <!-- Actions : modifier / supprimer -->
+            <td>
+                <a th:href="@{/products/edit/{ref}(ref=${product.reference})}">Modifier</a>
+                &nbsp;|&nbsp;
+                <a th:href="@{/products/delete/{ref}(ref=${product.reference})}"
+                   onclick="return confirm('Voulez-vous vraiment supprimer ce produit ?');">
+                    Supprimer
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>
