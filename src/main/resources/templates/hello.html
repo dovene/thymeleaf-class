@@ -1,10 +1,105 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
     <meta charset="UTF-8">
     <title>Bonjour Thymeleaf</title>
 </head>
+
 <body>
     <h1 th:text="'Bonjour ' + ${name}">Bonjour</h1>
+
+    <!-- Expression avec méthode -->
+    <p th:text="${person.getFirstName()}">John Doe</p>
+
+    <!-- Expression avec opérateur -->
+    <p th:text="${person.getAge() * 10}">0</p>
+
+    <!-- Après avoir défini l'objet : th:object="${person}" -->
+    <div th:object="${person}">
+        <p th:text="*{firstName}">John</p>
+        <p th:text="*{lastName}">Doe</p>
+    </div>
+
+    <!-- Messages internationalisés -->
+    <p th:text="#{welcome.message}">Welcome!</p>
+
+    <!-- URLs absolues ou relatives -->
+    <a th:href="@{/person/profile}">Profile</a>
+    <a th:href="@{/person/{id}(id=${person.getId()})}">User Profile</a>
+
+<!-- if -->
+<div th:if="${person.isAdult()}">
+    Contenu visible uniquement pour les adultes
+</div>
+
+<!-- unless (if not) -->
+<div th:unless="${person.isAdult()}">
+    Contenu visible pour les personnes de moins de 18 ans
+</div>
+
+<!-- switch/case -->
+<div th:switch="${person.getJob()}">
+    <p th:case="'admin'">Administrateur</p>
+    <p th:case="'user'">Utilisateur standard</p>
+    <p th:case="*">Invité</p>
+</div>
+
 </body>
+
+<!-- Boucle simple -->
+<ul>
+    <li th:each="person : ${persons}" th:text="${person.getFirstName()}">John Doe</li>
+</ul>
+
+<!-- Boucle avec les stats -->
+<ul>
+    <li th:each="person, stat : ${persons}">
+        <!-- stat.index commence à 0 -->
+        <!-- stat.count commence à 1 -->
+        <span th:text="${stat.count + '. ' + person.getFirstName()}">1. John Doe</span>
+    </li>
+</ul>
+
+
+
+<!-- Safe navigation operator -->
+<p th:text="${person?.getAddress()?.city}">Paris</p>
+<!-- Elvis operator -->
+<p th:text="${person.getAddress()} ?: 'Anonymous City'"> 1 rue de la Criée</p>
+
+
+
+<!-- Dates -->
+<p th:text="${#temporals.format(person.getBirthDate(), 'dd-MM-yyyy')}">01-01-2024</p>
+
+<!-- Nombres -->
+<p th:text="${#numbers.formatDecimal(person.getSalary(), 1, 2)}">19.99</p>
+
+<!-- Chaînes -->
+<p th:text="${#strings.toUpperCase(person.getFirstName)}">JOHN DOE</p>
+
+<!-- Monnaie -->
+<p th:text="${#numbers.formatCurrency(person.getSalary())}">19,99 €</p>
+
+
+<!-- Commentaire visible dans le HTML source -->
+<div>Contenu visible</div>
+
+<!--/* Commentaire Thymeleaf qui sera supprimé du rendu final */-->
+<div>Contenu visible</div>
+
+<!--/*/ 
+Multi-line comment
+Ce bloc entier sera supprimé du rendu final
+/*/-->
+
+<!-- Documentation bilingue -->
+<!--/* 
+    @author: John Doe
+    @description: User profile template
+    
+    FR: Template pour afficher le profil utilisateur
+    EN: Template to display user profile
+*/-->
 </html>
