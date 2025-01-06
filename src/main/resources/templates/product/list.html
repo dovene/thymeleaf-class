@@ -20,6 +20,14 @@
 </head>
 <body>
 
+<!-- Utilisation d'un fragment  -->
+<div th:insert="~{common/header :: menu}"></div>
+<div th:replace="~{common/header :: menu}"></div>
+<div th:include="~{common/header :: menu}"></div>
+
+<!-- Utilisation -->
+<div th:replace="~{common/alert :: alert('success', 'Opération réussie!')}">Alerte</div>
+
 <h1>Liste des produits</h1>
 
 <!-- Lien pour ajouter un nouveau produit -->
@@ -67,7 +75,7 @@
 
             <!-- Colonne "Information" : rouge si stock < alerte, vert sinon -->
             <td>
-                <span th:if="${product.quantityStock} < ${product.alertQuantity}" class="red">alerte stock</span>
+                <span th:if="${product.quantityStock} < ${product.alertQuantity}" class="red">Alerte stock</span>
                 <span th:if="${product.quantityStock} >= ${product.alertQuantity}" class="green">Ok</span>
             </td>
 
@@ -83,6 +91,12 @@
         </tr>
     </tbody>
 </table>
+
+
+
+
+
+
 
 </body>
 </html>
