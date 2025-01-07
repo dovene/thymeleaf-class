@@ -1,7 +1,10 @@
 package com.example.hellothym.controller;
 
 
+import java.util.Locale;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.*;
@@ -14,10 +17,18 @@ public class ProductController {
 
     @Autowired
     private ProductService productService;
+    @Autowired
+    private MessageSource messageSource;
 
     @GetMapping("/products")
-    public String listProducts(Model model) {
+    public String listProducts(Model model, Locale locale) {
         model.addAttribute("products", productService.findAll());
+        String message = messageSource.getMessage(
+            "products.title", 
+            null, 
+            locale
+        );
+        model.addAttribute("title", message);
         return "product/list"; 
     }
 

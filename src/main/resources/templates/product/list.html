@@ -20,13 +20,17 @@
 </head>
 <body>
 
-<!-- Utilisation d'un fragment  -->
-<div th:insert="~{common/header :: menu}"></div>
-<div th:replace="~{common/header :: menu}"></div>
-<div th:include="~{common/header :: menu}"></div>
+<!-- Message simple -->
+<h1 th:text="#{welcome.message}">Welcome</h1>
 
-<!-- Utilisation -->
-<div th:replace="~{common/alert :: alert('success', 'Opération réussie!')}">Alerte</div>
+<!-- Sélecteur de langue -->
+<div class="language-selector">
+    <a href="?lang=fr">Français</a>
+    <a href="?lang=en">English</a>
+</div>
+
+<!-- Message avec paramètre -->
+<h3 th:text="#{product.count(${products.size()})}">Nombre de produits</h3>
 
 <h1>Liste des produits</h1>
 
