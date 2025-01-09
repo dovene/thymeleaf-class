@@ -1,0 +1,55 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{store.list.title}">Liste des magasins</title>
+    <style>
+        table, th, td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<!-- Menu fragment (navigation + language switch) -->
+<div th:insert="common/menu :: menu"></div>
+
+<h1 th:text="#{store.list.title}">Liste des magasins</h1>
+
+<a th:href="@{/stores/add}" th:text="#{store.add}">Ajouter un magasin</a>
+<!-- If no stores -->
+<div th:if="${#lists.isEmpty(stores)}">
+    <p th:text="#{store.list.empty}">Aucun magasin enregistré</p>
+</div>
+
+<!-- Otherwise, display a table of stores -->
+<table th:unless="${#lists.isEmpty(stores)}">
+    <thead>
+        <tr>
+            <th th:text="#{store.id}">Identifiant</th>
+            <th th:text="#{store.address}">Adresse</th>
+            <th th:text="#{store.phone}">Téléphone</th>
+            <th th:text="#{actions}">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="st : ${stores}">
+            <td th:text="${st.id}">S001</td>
+            <td th:text="${st.address}">123 Rue Principale</td>
+            <td th:text="${st.phoneNumber}">0102030405</td>
+            <td>
+                <a th:href="@{/stores/edit/{id}(id=${st.id})}" 
+                   th:text="#{edit}">Modifier</a>
+                 | 
+                <a th:href="@{/stores/delete/{id}(id=${st.id})}"
+                   th:text="#{delete}"
+                   onclick="return confirm('Supprimer ce magasin ?');">
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

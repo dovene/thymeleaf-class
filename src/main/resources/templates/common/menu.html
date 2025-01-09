@@ -1,0 +1,10 @@
+<div th:fragment="menu">
+    <nav>
+        <a th:href="@{/products}" th:text="#{menu.product}">Produits</a> |
+        <a th:href="@{/stores}" th:text="#{menu.store}">Magasins</a> |
+        <a th:href="@{/stock}" th:text="#{menu.stock}">Stock</a> |
+        <a th:href="@{/?lang=fr}">[FR]</a> 
+        <a th:href="@{/?lang=en}">[EN]</a>
+    </nav>
+    <hr/>
+</div>

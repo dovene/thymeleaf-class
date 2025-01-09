@@ -1,0 +1,54 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="#{stock.list.title}">Liste du stock</title>
+    <style>
+        table, th, td {
+            border: 1px solid #000;
+            border-collapse: collapse;
+            padding: 5px;
+        }
+    </style>
+</head>
+<body>
+
+<div th:insert="common/menu :: menu"></div>
+
+<h1 th:text="#{stock.list.title}">Liste du stock</h1>
+
+<a th:href="@{/stock/add}" th:text="#{stock.add}">Ajouter</a>
+<br/><br/>
+
+<div th:if="${#lists.isEmpty(stock)}">
+    <p th:text="#{stock.list.empty}">Aucune entrée de stock enregistrée</p>
+</div>
+
+<table th:unless="${#lists.isEmpty(stock)}">
+    <thead>
+        <tr>
+            <th th:text="#{product.reference}">Produit (Ref)</th>
+            <th th:text="#{store.id}">Magasin (ID)</th>
+            <th th:text="#{stock.quantity}">Quantité</th>
+            <th th:text="#{actions}">Actions</th>
+        </tr>
+    </thead>
+    <tbody>
+        <tr th:each="entry : ${stock}">
+            <td th:text="${entry.productReference}">REF</td>
+            <td th:text="${entry.storeId}">S001</td>
+            <td th:text="${entry.stockQuantity}">10</td>
+            <td>
+                <a th:href="@{/stock/edit/{prod}/{store}(prod=${entry.productReference}, store=${entry.storeId})}"
+                   th:text="#{edit}">Modifier</a>
+                 | 
+                <a th:href="@{/stock/delete/{prod}/{store}(prod=${entry.productReference}, store=${entry.storeId})}"
+                   th:text="#{delete}"
+                   onclick="return confirm('Supprimer cette entrée de stock ?');">
+                </a>
+            </td>
+        </tr>
+    </tbody>
+</table>
+
+</body>
+</html>

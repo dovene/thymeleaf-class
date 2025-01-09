@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <title th:text="${stock.productReference} == null ? #{stock.form.add} : #{stock.form.add}">Formulaire Stock</title>
+</head>
+<body>
+
+<div th:insert="common/menu :: menu"></div>
+
+<h2 th:text="${stock.productReference} == null ? #{stock.form.add} : #{stock.form.add}">
+    Formulaire Stock
+</h2>
+
+<form th:action="@{/stock}" th:object="${stock}" method="post">
+    <div>
+        <label th:text="#{product}">Produit</label>
+        <select th:field="*{productReference}" 
+                th:disabled="${stock.productReference} != null">
+            <option th:each="p : ${products}"
+                    th:value="${p.reference}"
+                    th:text="${p.reference} + ' - ' + ${p.designation}">
+            </option>
+        </select>
+        <br/><br/>
+    </div>
+    <div>
+        <label th:text="#{store}">Magasin </label>
+        <select th:field="*{storeId}"
+                th:disabled="${stock.storeId} != null">
+            <option th:each="s : ${stores}"
+                    th:value="${s.id}"
+                    th:text="${s.id} + ' - ' + ${s.address}">
+            </option>
+        </select>
+        <br/><br/>
+    </div>
+    <div>
+        <label th:text="#{stock.quantity}">Quantité</label>
+        <input type="number" th:field="*{stockQuantity}" />
+        <br/><br/>
+    </div>
+    
+    
+    <button type="submit" th:text="#{save}">Enregistrer</button>
+</form>
+
+</body>
+</html>
