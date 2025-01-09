@@ -28,7 +28,7 @@
 
 <!-- 
   Bloc qui s’affiche si la liste est vide 
-  (#lists.isEmpty(products) retourne true si la liste est vide)
+  ${products.isEmpty()} est équivalent à ${#lists.isEmpty(stock)} et retourne true si la liste est vide)
 -->
 <div th:if="${products.isEmpty()}">
     <p>Aucun produit enregistré.</p>
@@ -61,8 +61,8 @@
             <td th:text="${product.category}">catégorie</td>
             <td th:text="${product.alertQuantity}">0</td>
             <td th:text="${product.salePrice}">0.0</td>
-            <!-- Formatage de date si besoin :
-                 th:text="${#temporals.format(product.creationDate, 'dd/MM/yyyy')}" -->
+           
+            <!-- Formatage de date -->
             <td th:text="${#temporals.format(product.creationDate, 'dd/MM/yyyy')}">date</td>
 
             <!-- Colonne "Information" : rouge si stock < alerte, vert sinon -->

@@ -1,49 +1,67 @@
 <!-- resources/templates/product-form.html -->
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
+
 <head>
-    <title th:text="${product.reference} != null ? 'Modifier un produit' : 'Ajouter un produit'"></title>
+    <title th:text="${product.reference} == null ? 'Ajouter un produit' : 'Modifier un produit'"></title>
 </head>
+
 <body>
 
-<h1 th:text="${product.reference} != null ? 'Modification du produit ' + ${product.reference} : 'Ajout d\'un produit'"></h1>
+    <h1
+        th:text="${product.reference} == null ? 'Ajout d\'un produit' : 'Modification du produit ' + ${product.reference} ">
+    </h1>
 
-<form th:action="@{/products}" th:object="${product}" method="post">
-    <label>Référence :</label>
-    <input type="text" th:field="*{reference}" 
-           th:readonly="${product.reference} != null ? true : false" />
-    <br/><br/>
+    <form th:action="@{/products}" th:object="${product}" method="post">
+        <div>
+            <label>Référence :</label>
+            <input type="text" th:field="*{reference}" th:readonly="${product.reference} != null ? true : false" />
+            <br /><br />
+        </div>
 
-    <label>Désignation :</label>
-    <input type="text" th:field="*{designation}" />
-    <br/><br/>
+        <div>
+            <label>Désignation :</label>
+            <input type="text" th:field="*{designation}" />
+            <br /><br />
+        </div>
 
-    <label>Quantité en stock :</label>
-    <input type="number" th:field="*{quantityStock}" />
-    <br/><br/>
+        <div>
+            <label>Quantité en stock :</label>
+            <input type="number" th:field="*{quantityStock}" />
+            <br /><br />
+        </div>
 
-    <label>Catégorie :</label>
-    <select th:field="*{category}">
-        <option value="matériel">matériel</option>
-        <option value="logiciel">logiciel</option>
-        <option value="mixte">mixte</option>
-    </select>
-    <br/><br/>
+        <div>
+            <label>Catégorie :</label>
+            <select th:field="*{category}">
+                <option value="matériel">matériel</option>
+                <option value="logiciel">logiciel</option>
+                <option value="mixte">mixte</option>
+            </select>
+            <br /><br />
+        </div>
 
-    <label>Quantité d'alerte :</label>
-    <input type="number" th:field="*{alertQuantity}" />
-    <br/><br/>
+        <div>
+            <label>Quantité d'alerte :</label>
+            <input type="number" th:field="*{alertQuantity}" />
+            <br /><br />
+        </div>
 
-    <label>Prix de vente :</label>
-    <input type="number" step="0.01" th:field="*{salePrice}" />
-    <br/><br/>
+        <div>
+            <label>Prix de vente :</label>
+            <input type="number" step="0.01" th:field="*{salePrice}" />
+            <br /><br />
+        </div>
 
-    <label>Date de création :</label>
-    <input type="date" th:field="*{creationDate}" />
-    <br/><br/>
+        <div>
+            <label>Date de création :</label>
+            <input type="date" th:field="*{creationDate}" />
+            <br /><br />
+        </div>
 
-    <button type="submit">Enregistrer</button>
-</form>
+        <button type="submit">Enregistrer</button>
+    </form>
 
 </body>
+
 </html>
