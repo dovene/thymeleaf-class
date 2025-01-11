@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${stock.productReference} == null ? #{stock.form.add} : #{stock.form.add}">Formulaire Stock</title>
+    <title th:text="${!isEditMode} ? #{stock.form.add} : #{stock.form.edit}">Formulaire Stock</title>
+    <link rel="stylesheet" href="../../css/style.css" />
 </head>
 <body>
 
-<div th:insert="common/menu :: menu"></div>
+<div th:insert="~{common/menu :: menu}"></div>
 
-<h2 th:text="${stock.productReference} == null ? #{stock.form.add} : #{stock.form.add}">
+<h2 th:text="${!isEditMode} ? #{stock.form.add} : #{stock.form.edit}">
     Formulaire Stock
 </h2>
 
@@ -15,31 +16,40 @@
     <div>
         <label th:text="#{product}">Produit</label>
         <select th:field="*{productReference}" 
-                th:disabled="${stock.productReference} != null">
+                th:disabled="${isEditMode}">
             <option th:each="p : ${products}"
                     th:value="${p.reference}"
-                    th:text="${p.reference} + ' - ' + ${p.designation}">
+                    th:text="${p.reference} + ' - ' + ${p.designation}"
+                    th:selected="${p.reference == stock.productReference}">
             </option>
         </select>
+        <!-- Hidden input to ensure productReference is sent if isEditMode because disabled selector does not hold/send any value -->
+        <input type="hidden" th:field="*{productReference}" th:if="${isEditMode}" />
+
+        <span class="error-message" th:if="${#fields.hasErrors('productReference')}" th:errors="*{productReference}">Erreur</span>
         <br/><br/>
     </div>
     <div>
         <label th:text="#{store}">Magasin </label>
         <select th:field="*{storeId}"
-                th:disabled="${stock.storeId} != null">
+                th:disabled="${isEditMode}">
             <option th:each="s : ${stores}"
                     th:value="${s.id}"
-                    th:text="${s.id} + ' - ' + ${s.address}">
+                    th:text="${s.id} + ' - ' + ${s.address}"
+                    th:selected="${s.id == stock.storeId}">
             </option>
         </select>
+        <!-- Hidden input to ensure storeId is sent if isEditMode because disabled selector does not hold/send any value -->
+        <input type="hidden" th:field="*{storeId}" th:if="${isEditMode}" />
+        <span class="error-message" th:if="${#fields.hasErrors('storeId')}" th:errors="*{storeId}">Erreur</span>
         <br/><br/>
     </div>
     <div>
         <label th:text="#{stock.quantity}">Quantité</label>
         <input type="number" th:field="*{stockQuantity}" />
+        <span class="error-message" th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}">Erreur</span>
         <br/><br/>
     </div>
-    
     
     <button type="submit" th:text="#{save}">Enregistrer</button>
 </form>

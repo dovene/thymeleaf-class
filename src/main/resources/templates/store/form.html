@@ -1,32 +1,35 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${store.id} == null ? #{store.form.add} : #{store.form.edit}">Formulaire Magasin</title>
+    <title th:text="${!isEditMode} ? #{store.form.add} : #{store.form.edit}">Formulaire Magasin</title>
+    <link rel="stylesheet" href="../../css/style.css" />
 </head>
 <body>
 
-<div th:insert="common/menu :: menu"></div>
+<div th:insert="~{common/menu :: menu}"></div>
 
-<h2 th:text="${store.id} == null ? #{store.form.add} : #{store.form.edit}">
+<h2 th:text="${!isEditMode} ? #{store.form.add} : #{store.form.edit}">
     Formulaire Magasin
 </h2>
 
 <form th:action="@{/stores}" th:object="${store}" method="post">
     <div>
         <label th:text="#{store.id}">Identifiant</label>
-        <!-- The ID is read-only when editing an existing store, to avoid changing the unique key -->
         <input type="text" th:field="*{id}"
-               th:readonly="${store.id} != null ? true : false" />
+               th:readonly="${isEditMode} ? true : false" />
+        <span class="error-message" th:if="${#fields.hasErrors('id')}" th:errors="*{id}">Erreur</span>
         <br /><br />
     </div>
     <div>
         <label th:text="#{store.address}">Adresse</label>
         <input type="text" th:field="*{address}" />
+        <span class="error-message" th:if="${#fields.hasErrors('address')}" th:errors="*{address}">Erreur</span>
         <br /><br />
     </div>
     <div>
         <label th:text="#{store.phone}">Téléphone</label>
         <input type="text" th:field="*{phoneNumber}" />
+        <span class="error-message" th:if="${#fields.hasErrors('phoneNumber')}" th:errors="*{phoneNumber}">Erreur</span>
         <br /><br />
     </div>
 

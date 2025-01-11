@@ -2,17 +2,11 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="#{stock.list.title}">Liste du stock</title>
-    <style>
-        table, th, td {
-            border: 1px solid #000;
-            border-collapse: collapse;
-            padding: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/style.css" />
 </head>
 <body>
 
-<div th:insert="common/menu :: menu"></div>
+<div th:insert="~{common/menu :: menu}"></div>
 
 <h1 th:text="#{stock.list.title}">Liste du stock</h1>
 

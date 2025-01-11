@@ -4,12 +4,15 @@ package com.example.hellothym.controller;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 
 import com.example.hellothym.model.Stock;
 import com.example.hellothym.service.ProductService;
 import com.example.hellothym.service.StockService;
 import com.example.hellothym.service.StoreService;
+
+import jakarta.validation.Valid;
 
 @Controller
 @RequestMapping("/stock")
@@ -33,6 +36,7 @@ public class StockController {
         model.addAttribute("stock", new Stock());
         model.addAttribute("products", productService.findAll());
         model.addAttribute("stores", storeService.findAll());
+        model.addAttribute("isEditMode", false);
         return "stock/form";
     }
 
@@ -45,12 +49,19 @@ public class StockController {
         model.addAttribute("stock", entry);
         model.addAttribute("products", productService.findAll());
         model.addAttribute("stores", storeService.findAll());
+        model.addAttribute("isEditMode", true);
         return "stock/form";
     }
 
     @PostMapping
-    public String saveStock(@ModelAttribute("stock") Stock Stock) {
-        stockService.save(Stock);
+    public String saveStock(@Valid @ModelAttribute("stock") Stock stock, BindingResult result, Model model) {
+        if (result.hasErrors()) {
+            model.addAttribute("products", productService.findAll());
+            model.addAttribute("stores", storeService.findAll());
+            model.addAttribute("isEditMode", stockService.findByProductAndStore(stock.getProductReference(), stock.getStoreId()) != null);
+            return "stock/form";
+        }
+        stockService.save(stock);
         return "redirect:/stock";
     }
 

@@ -2,14 +2,36 @@ package com.example.hellothym.model;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
+import jakarta.validation.constraints.Min;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.Positive;
+
 public class Product {
     
+    @NotBlank(message = "La référence est obligatoire") 
     private String reference;      
+
+    @NotBlank(message = "La désignation est obligatoire")
     private String designation;    
-    private int quantityStock;     
+
+    @Min(value = 1, message = "La quantité en stock doit être supérieure à 0")
+    private int quantityStock;   
+    
+    @NotBlank(message = "La catégorie est obligatoire")
     private String category;       
+
+    @Min(value = 1, message = "La quantité d'alerte doit être supérieure à 0")
     private int alertQuantity;    
-    private Double salePrice;     
+    
+    @NotNull(message = "Le prix de vente est obligatoire")
+    @Positive(message = "Le prix de vente doit être supérieur à 0")
+    private Double salePrice;  
+
+    @NotNull(message = "La date de création est obligatoire")   
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
 
     public Product() {
@@ -25,8 +47,7 @@ public class Product {
         this.salePrice = salePrice;
         this.creationDate = creationDate;
     }
-
-    // --- Getters et setters ---
+   
     public String getReference() {
         return reference;
     }

@@ -1,8 +1,13 @@
 package com.example.hellothym.model;
 
+import jakarta.validation.constraints.NotBlank;
+
 public class Store {
+    @NotBlank(message = "L'identifiant est obligatoire")
     private String id;       
+    @NotBlank(message = "L'adresse est obligatoire")
     private String address;
+    @NotBlank(message = "Le numéro de téléphone est obligatoire")
     private String phoneNumber;
 
     public Store() {

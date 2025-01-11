@@ -3,30 +3,12 @@
 
 <head>
     <title>Liste des produits</title>
-    <style>
-        .red {
-            color: red;
-            font-weight: bold;
-        }
-
-        .green {
-            color: green;
-            font-weight: bold;
-        }
-
-        table,
-        th,
-        td {
-            border: 1px solid #000;
-            border-collapse: collapse;
-            padding: 5px;
-        }
-    </style>
+    <link rel="stylesheet" href="../../css/style.css" />
 </head>
 
 <body>
 
-    <div th:insert="common/menu :: menu"></div>
+    <div th:insert="~{common/menu :: menu}"></div>
 
     <h1 th:text="#{product.list.title}">Liste des produits</h1>
 

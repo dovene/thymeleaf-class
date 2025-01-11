@@ -2,28 +2,21 @@
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
     <title th:text="#{store.list.title}">Liste des magasins</title>
-    <style>
-        table, th, td {
-            border: 1px solid #000;
-            border-collapse: collapse;
-            padding: 5px;
-        }
+    <link rel="stylesheet" href="../../css/style.css" />
     </style>
 </head>
 <body>
 
-<!-- Menu fragment (navigation + language switch) -->
-<div th:insert="common/menu :: menu"></div>
+<div th:insert="~{common/menu :: menu}"></div>
 
 <h1 th:text="#{store.list.title}">Liste des magasins</h1>
 
 <a th:href="@{/stores/add}" th:text="#{store.add}">Ajouter un magasin</a>
-<!-- If no stores -->
+
 <div th:if="${#lists.isEmpty(stores)}">
     <p th:text="#{store.list.empty}">Aucun magasin enregistré</p>
 </div>
 
-<!-- Otherwise, display a table of stores -->
 <table th:unless="${#lists.isEmpty(stores)}">
     <thead>
         <tr>
