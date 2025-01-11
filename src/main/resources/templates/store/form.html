@@ -14,7 +14,6 @@
 <form th:action="@{/stores}" th:object="${store}" method="post">
     <div>
         <label th:text="#{store.id}">Identifiant</label>
-        <!-- The ID is read-only when editing an existing store, to avoid changing the unique key -->
         <input type="text" th:field="*{id}"
                th:readonly="${store.id} != null ? true : false" />
         <br /><br />

@@ -9,7 +9,6 @@ public class HomeController {
 
     @GetMapping("/")
     public String home(Model model) {
-        // Page d'accueil ou redirection vers /products
         return "home";
     }
 }
