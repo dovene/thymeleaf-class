@@ -26,7 +26,6 @@ public class Product {
         this.creationDate = creationDate;
     }
 
-    // --- Getters et setters ---
     public String getReference() {
         return reference;
     }
