@@ -3,78 +3,81 @@
 
 <head>
     <title>Liste des produits</title>
-    <link rel="stylesheet" href="../../css/style.css" />
+    <div th:insert="~{common/menu :: header}"></div>
 </head>
 
-<body>
-
+<body class="bg-light">
     <div th:insert="~{common/menu :: menu}"></div>
 
-    <h1 th:text="#{product.list.title}">Liste des produits</h1>
-
-    <!-- Lien pour ajouter un nouveau produit -->
-    <a th:href="@{/products/add}" th:text="#{product.add}">Ajouter un produit</a>
-    <br /><br />
-
-    <!-- 
-  Bloc qui s’affiche si la liste est vide 
-  (#lists.isEmpty(products) retourne true si la liste est vide)
--->
-    <div th:if="${products.isEmpty()}">
-        <p th:text="#{product.list.empty}">Aucun produit enregistré.</p>
-    </div>
-
-    <!-- 
-  Bloc qui s’affiche si la liste N’EST PAS vide 
-  (th:unless = NOT de la condition ci-dessus)
--->
-    <table th:unless="${products.isEmpty()}">
-        <thead>
-            <tr>
-                <th th:text="#{product.reference}">Référence</th>
-                <th th:text="#{product.designation}">Désignation</th>
-                <th th:text="#{product.quantityStock}">Quantité en stock</th>
-                <th th:text="#{product.category}">Catégorie</th>
-                <th th:text="#{product.alertQuantity}">Quantité d'alerte</th>
-                <th th:text="#{product.salePrice}">Prix de vente</th>
-                <th th:text="#{product.creationDate}">Date de création</th>
-                <th th:text="#{product.information}">Information</th>
-                <th th:text="#{actions}">Actions</th>
-            </tr>
-        </thead>
-        <tbody>
-            <!-- Boucle sur la liste des produits si elle n'est pas vide -->
-            <tr th:each="product : ${products}">
-                <td th:text="${product.reference}">REF</td>
-                <td th:text="${product.designation}">Désignation</td>
-                <td th:text="${product.quantityStock}">0</td>
-                <td th:text="${product.category}">catégorie</td>
-                <td th:text="${product.alertQuantity}">0</td>
-                <td th:text="${product.salePrice}">0.0</td>
-                <!-- Formatage de date si besoin :
-                 th:text="${#temporals.format(product.creationDate, 'dd/MM/yyyy')}" -->
-                <td th:text="${#temporals.format(product.creationDate, 'dd/MM/yyyy')}">date</td>
-
-                <!-- Colonne "Information" : rouge si stock < alerte, vert sinon -->
-                <td>
-                    <span th:if="${product.quantityStock} < ${product.alertQuantity}" class="red"
-                        th:text="#{product.alertMessage}">Alerte stock</span>
-                    <span th:if="${product.quantityStock} >= ${product.alertQuantity}" class="green"
-                        th:text="#{product.okMessage}">Ok</span>
-                </td>
-
-                <!-- Actions : modifier / supprimer -->
-                <td>
-                    <a th:href="@{/products/edit/{ref}(ref=${product.reference})}" th:text="#{edit}">Modifier</a>
-                    &nbsp;|&nbsp;
-                    <a th:href="@{/products/delete/{ref}(ref=${product.reference})}"
-                        onclick="return confirm('Voulez-vous vraiment supprimer ce produit ?');" th:text="#{delete}">
-                        Supprimer
+    <div class="container py-5">
+        <div class="row mb-4">
+            <div class="col">
+                <div>
+                    <h1 class="h2 mb-0" th:text="#{product.list.title}">Liste des produits</h1>
+                    <a th:href="@{/products/add}" class="btn btn-primary" th:text="#{product.add}">
+                        <i class="bi bi-plus-circle me-2"></i>Ajouter un produit
                     </a>
-                </td>
-            </tr>
-        </tbody>
-    </table>
+                </div>
+            </div>
+        </div>
+
+        <!-- Empty state message -->
+        <div th:if="${products.isEmpty()}" class="text-center py-5">
+            <i class="bi bi-inbox display-1 text-muted"></i>
+            <p class="h4 mt-3 text-muted" th:text="#{product.list.empty}">Aucun produit enregistré.</p>
+        </div>
+
+        <!-- Product table -->
+        <div class="table-responsive" th:unless="${products.isEmpty()}">
+            <table class="table table-hover align-middle mb-0">
+                <thead class="table-light">
+                    <tr>
+                        <th th:text="#{product.reference}">Référence</th>
+                        <th th:text="#{product.designation}">Désignation</th>
+                        <th th:text="#{product.quantityStock}">Quantité en stock</th>
+                        <th th:text="#{product.category}">Catégorie</th>
+                        <th th:text="#{product.alertQuantity}">Quantité d'alerte</th>
+                        <th th:text="#{product.salePrice}">Prix de vente</th>
+                        <th th:text="#{product.creationDate}">Date de création</th>
+                        <th th:text="#{product.information}">Information</th>
+                        <th th:text="#{actions}">Actions</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr th:each="product : ${products}">
+                        <td th:text="${product.reference}">REF</td>
+                        <td th:text="${product.designation}">Désignation</td>
+                        <td th:text="${product.quantityStock}">0</td>
+                        <td>
+                            <span class="badge rounded-pill"
+                                th:classappend="${product.category == 'matériel'} ? 'bg-primary' : (${product.category == 'logiciel'} ? 'bg-success' : 'bg-info')"
+                                th:text="${product.category}">catégorie</span>
+                        </td>
+                        <td th:text="${product.alertQuantity}">0</td>
+                        <td th:text="${#numbers.formatDecimal(product.salePrice, 1, 2) + ' €'}">0.0 €</td>
+                        <td th:text="${#temporals.format(product.creationDate, 'dd/MM/yyyy')}">date</td>
+                        <td>
+                            <span class="badge"
+                                th:classappend="${product.quantityStock < product.alertQuantity} ? 'bg-danger' : 'bg-success'"
+                                th:text="${product.quantityStock < product.alertQuantity} ? #{product.alertMessage} : #{product.okMessage}">
+                                Status
+                            </span>
+                        </td>
+                        <td >
+                                <a th:href="@{/products/edit/{ref}(ref=${product.reference})}"
+                                    class="btn btn-info btn-sm" th:text="#{edit}">Modifier</a>
+                                <a th:href="@{/products/delete/{ref}(ref=${product.reference})}"
+                                    class="btn btn-danger btn-sm" th:text="#{delete}"
+                                    onclick="return confirm('Supprimer ce produit ?');">Supprimer
+                                </a>
+                            
+                        </td>
+                    </tr>
+                </tbody>
+            </table>
+
+        </div>
+    </div>
 </body>
 
 </html>

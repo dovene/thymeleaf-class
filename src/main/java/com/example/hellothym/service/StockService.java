@@ -12,6 +12,9 @@ public class StockService {
 
     private static final List<Stock> stockEntries = new ArrayList<>();
 
+    static {
+        stockEntries.add(new Stock("REF001", "STORE001", 10));
+    }
     public List<Stock> findAll() {
         return stockEntries;
     }

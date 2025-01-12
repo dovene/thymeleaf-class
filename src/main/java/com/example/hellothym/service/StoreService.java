@@ -12,6 +12,10 @@ public class StoreService {
 
     private static final List<Store> stores = new ArrayList<>();
 
+    static {
+        stores.add(new Store("STORE001", "Rue de la Paix", "0102030405"));
+    }
+    
     public List<Store> findAll() {
         return stores;
     }

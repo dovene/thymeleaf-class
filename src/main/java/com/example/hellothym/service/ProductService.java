@@ -1,5 +1,6 @@
 package com.example.hellothym.service;
 
+import java.time.LocalDate;
 import java.util.*;
 
 import org.springframework.stereotype.Service;
@@ -11,6 +12,10 @@ public class ProductService {
 
     private static final List<Product> productList = new ArrayList<>();
 
+    static {
+        productList.add(new Product("REF001", "Ordinateur portable", 10, "Informatique", 2, 800.0, LocalDate.now()));
+    }
+    
     public List<Product> findAll() {
         return productList;
     }

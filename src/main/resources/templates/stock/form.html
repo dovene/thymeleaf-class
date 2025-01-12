@@ -1,58 +1,74 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-    <title th:text="${!isEditMode} ? #{stock.form.add} : #{stock.form.edit}">Formulaire Stock</title>
-    <link rel="stylesheet" href="../../css/style.css" />
+    <title th:text="${!isEditMode} ? #{stock.form.add} : #{stock.form.edit}"></title>
+    <div th:insert="~{common/menu :: header}"></div>
+    <link rel="stylesheet" href="../../css/bootstrap.min.css" />
 </head>
-<body>
+<body class="bg-light">
+    <div th:insert="~{common/menu :: menu}"></div>
 
-<div th:insert="~{common/menu :: menu}"></div>
+    <div class="container py-5">
+        <div class="row justify-content-center">
+            <div class="col-md-8">
+                <div class="card shadow">
+                    <div class="card-header bg-primary text-white">
+                        <h3 class="card-title mb-0" th:text="${!isEditMode} ? #{stock.form.add} : #{stock.form.edit}"></h3>
+                    </div>
+                    <div class="card-body">
+                        <form th:action="@{/stock}" th:object="${stock}" method="post" class="needs-validation">
+                            <!-- Product Selection -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{product}">Produit :</label>
+                                <select class="form-select" th:field="*{productReference}" 
+                                        th:disabled="${isEditMode}"
+                                        th:classappend="${#fields.hasErrors('productReference')} ? 'is-invalid'">
+                                    <option th:each="p : ${products}"
+                                            th:value="${p.reference}"
+                                            th:text="${p.reference} + ' - ' + ${p.designation}"
+                                            th:selected="${p.reference == stock.productReference}">
+                                    </option>
+                                </select>
+                                <input type="hidden" th:field="*{productReference}" th:if="${isEditMode}" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('productReference')}" 
+                                     th:errors="*{productReference}">Erreur</div>
+                            </div>
 
-<h2 th:text="${!isEditMode} ? #{stock.form.add} : #{stock.form.edit}">
-    Formulaire Stock
-</h2>
+                            <!-- Store Selection -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{store}">Magasin :</label>
+                                <select class="form-select" th:field="*{storeId}"
+                                        th:disabled="${isEditMode}"
+                                        th:classappend="${#fields.hasErrors('storeId')} ? 'is-invalid'">
+                                    <option th:each="s : ${stores}"
+                                            th:value="${s.id}"
+                                            th:text="${s.id} + ' - ' + ${s.address}"
+                                            th:selected="${s.id == stock.storeId}">
+                                    </option>
+                                </select>
+                                <input type="hidden" th:field="*{storeId}" th:if="${isEditMode}" />
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('storeId')}" 
+                                     th:errors="*{storeId}">Erreur</div>
+                            </div>
 
-<form th:action="@{/stock}" th:object="${stock}" method="post">
-    <div>
-        <label th:text="#{product}">Produit</label>
-        <select th:field="*{productReference}" 
-                th:disabled="${isEditMode}">
-            <option th:each="p : ${products}"
-                    th:value="${p.reference}"
-                    th:text="${p.reference} + ' - ' + ${p.designation}"
-                    th:selected="${p.reference == stock.productReference}">
-            </option>
-        </select>
-        <!-- Hidden input to ensure productReference is sent if isEditMode because disabled selector does not hold/send any value -->
-        <input type="hidden" th:field="*{productReference}" th:if="${isEditMode}" />
+                            <!-- Stock Quantity -->
+                            <div class="mb-3">
+                                <label class="form-label" th:text="#{stock.quantity}">Quantité :</label>
+                                <input type="number" class="form-control" th:field="*{stockQuantity}"
+                                       th:classappend="${#fields.hasErrors('stockQuantity')} ? 'is-invalid'">
+                                <div class="invalid-feedback" th:if="${#fields.hasErrors('stockQuantity')}" 
+                                     th:errors="*{stockQuantity}">Erreur</div>
+                            </div>
 
-        <span class="error-message" th:if="${#fields.hasErrors('productReference')}" th:errors="*{productReference}">Erreur</span>
-        <br/><br/>
+                            <div class="d-flex justify-content-end gap-2 mt-4">
+                                <a href="/stock" class="btn btn-secondary" th:text="#{cancel}">Annuler</a>
+                                <button type="submit" class="btn btn-primary" th:text="#{save}">Enregistrer</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
-        <label th:text="#{store}">Magasin </label>
-        <select th:field="*{storeId}"
-                th:disabled="${isEditMode}">
-            <option th:each="s : ${stores}"
-                    th:value="${s.id}"
-                    th:text="${s.id} + ' - ' + ${s.address}"
-                    th:selected="${s.id == stock.storeId}">
-            </option>
-        </select>
-        <!-- Hidden input to ensure storeId is sent if isEditMode because disabled selector does not hold/send any value -->
-        <input type="hidden" th:field="*{storeId}" th:if="${isEditMode}" />
-        <span class="error-message" th:if="${#fields.hasErrors('storeId')}" th:errors="*{storeId}">Erreur</span>
-        <br/><br/>
-    </div>
-    <div>
-        <label th:text="#{stock.quantity}">Quantité</label>
-        <input type="number" th:field="*{stockQuantity}" />
-        <span class="error-message" th:if="${#fields.hasErrors('stockQuantity')}" th:errors="*{stockQuantity}">Erreur</span>
-        <br/><br/>
-    </div>
-    
-    <button type="submit" th:text="#{save}">Enregistrer</button>
-</form>
-
 </body>
 </html>

@@ -1,10 +1,60 @@
-<div th:fragment="menu">
-    <nav>
-        <a th:href="@{/products}" th:text="#{menu.product}">Produits</a> |
-        <a th:href="@{/stores}" th:text="#{menu.store}">Magasins</a> |
-        <a th:href="@{/stock}" th:text="#{menu.stock}">Stock</a> |
-        <a th:href="@{/?lang=fr}">[FR]</a> 
-        <a th:href="@{/?lang=en}">[EN]</a>
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head id="header">
+    <div th:fragment="header">
+        <meta charset="utf-8" />
+        <title>ThymProducts</title> 
+        <link rel="stylesheet" th:href="@{/css/bootstrap.min.css}" />
+        <link rel="stylesheet" th:href="@{/css/style.css}" />
+    </div>
+</head>
+<body>
+    <!-- Updated Navbar -->
+    <nav class="navbar navbar-expand-lg navbar-dark bg-primary" id="menu" th:fragment="menu">
+        <div class="container">
+            <a class="navbar-brand" href="/">ThymProducts</a>
+            <button 
+                class="navbar-toggler" 
+                type="button" 
+                data-bs-toggle="collapse" 
+                data-bs-target="#navbarNav" 
+                aria-controls="navbarNav" 
+                aria-expanded="false" 
+                aria-label="Toggle navigation"
+            >
+                <span class="navbar-toggler-icon"></span>
+            </button>
+            
+            <div class="collapse navbar-collapse" id="navbarNav">
+                <!-- Main Navigation Items (Left-aligned) -->
+                <ul class="navbar-nav me-auto">
+                    <!-- Products -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/products}" th:text="#{menu.product}">Produits</a> 
+                    </li>
+                    <!-- Stores -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/stores}" th:text="#{menu.store}">Magasins</a>
+                    </li>
+                    <!-- Stock -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/stock}" th:text="#{menu.stock}">Stock</a>
+                    </li>
+                </ul>
+                
+                <!-- Language Selection (Right-aligned) -->
+                <ul class="navbar-nav">
+                    <!-- Language: FR -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/?lang=fr}">[FR]</a>
+                    </li>
+                    <!-- Language: EN -->
+                    <li class="nav-item">
+                        <a class="nav-link" th:href="@{/?lang=en}">[EN]</a>
+                    </li>
+                </ul>
+            </div>
+        </div>
     </nav>
-    <hr/>
-</div>
+</body>
+</html>
