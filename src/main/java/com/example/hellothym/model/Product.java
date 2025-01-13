@@ -2,6 +2,8 @@ package com.example.hellothym.model;
 
 import java.time.LocalDate;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 public class Product {
     
     private String reference;      
@@ -10,6 +12,8 @@ public class Product {
     private String category;       
     private int alertQuantity;    
     private Double salePrice;     
+
+    @DateTimeFormat(pattern = "yyyy-MM-dd")
     private LocalDate creationDate;
 
     public Product() {
