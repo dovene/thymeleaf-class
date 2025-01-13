@@ -21,32 +21,5 @@ public class ProductController {
         return "product/list"; 
     }
 
-    @GetMapping("/products/add")
-    public String addProductForm(Model model) {
-        model.addAttribute("product", new Product()); 
-        return "product/form";
-    }
-
-    @GetMapping("/products/edit/{ref}")
-    public String editProductForm(@PathVariable("ref") String reference, Model model) {
-        Product existingProduct = productService.findByReference(reference);
-        if (existingProduct == null) {
-            // Au choix : redirection vers la liste ou affichage d'une erreur
-            return "redirect:/products";
-        }
-        model.addAttribute("product", existingProduct);
-        return "product/form";
-    }
-
-    @PostMapping("/products")
-    public String saveProduct(@ModelAttribute("product") Product product) {
-        productService.save(product);
-        return "redirect:/products";
-    }
-
-    @GetMapping("/products/delete/{ref}")
-    public String deleteProduct(@PathVariable("ref") String reference) {
-        productService.deleteByReference(reference);
-        return "redirect:/products";
-    }
+   
 }

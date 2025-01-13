@@ -10,6 +10,7 @@ public class Product {
     private String category;       
     private int alertQuantity;    
     private Double salePrice;     
+
     private LocalDate creationDate;
 
     public Product() {
